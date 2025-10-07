@@ -64,134 +64,85 @@
         </div>
     </section>
 
-    <!-- Tela de Pagamento -->
-    <section id="payment-screen" class="screen">
-        <div class="container">
-            <div class="payment-container">
-                <div class="payment-header">
-                    <div class="payment-icon">💳</div>
-                    <h2 class="payment-title">Para descobrir a idade exata do <span id="cat-name-payment"></span></h2>
-                    <p class="payment-subtitle">e receber seu relatório personalizado completo</p>
-                </div>
+  <script>
+/* ====== CONFIGURAÇÃO ====== */
+const CHECKOUT_URL = 'https://seguro.paipet.com.br/r/NIC3723OUB';
 
-                <div class="price-display">
-                    <div class="price-amount">R$ 7,00</div>
-                    <div class="price-description">Processamento seguro e instantâneo</div>
-                </div>
+/* Substitui a função processPayment para:
+   - salvar o resultado/localmente,
+   - redirecionar para o checkout,
+   - NÃO liberar o resultado imediatamente. */
+function processPayment(method) {
+  // salva método escolhido (opcional)
+  try { localStorage.setItem('paymentMethod', method); } catch (e) {}
 
-                <div class="payment-methods">
-                    <button class="payment-method" onclick="processPayment('PIX')">
-                        <span class="payment-method-icon">💳</span>
-                        <div class="payment-method-info">
-                            <div class="payment-method-name">PIX</div>
-                            <div class="payment-method-desc">Aprovação instantânea</div>
-                        </div>
-                    </button>
-                    
-                    <button class="payment-method" onclick="processPayment('Cartão')">
-                        <span class="payment-method-icon">💳</span>
-                        <div class="payment-method-info">
-                            <div class="payment-method-name">Cartão de Crédito</div>
-                            <div class="payment-method-desc">Parcelado em até 2x</div>
-                        </div>
-                    </button>
+  // tenta obter o resultado do quiz (prioriza window.testResult, senão lê do DOM)
+  let result = null;
+  if (typeof window.testResult !== 'undefined') {
+    result = window.testResult;
+  } else {
+    result = {
+      title: document.getElementById('result-title')?.innerText || '',
+      age: document.getElementById('result-age')?.innerText || '',
+      lifeStage: document.getElementById('life-stage-content')?.innerText || '',
+      characteristics: document.getElementById('characteristics-content')?.innerText || '',
+      care: document.getElementById('care-content')?.innerText || '',
+      expectancy: document.getElementById('expectancy-content')?.innerText || '',
+      emotional: document.getElementById('emotional-content')?.innerText || ''
+    };
+  }
 
-                <div class="security-info">
-                    <span class="security-icon">🔐</span>
-                    <span class="security-text">Seus dados estão protegidos</span>
-                </div>
-            </div>
-        </div>
-    </section>
+  // salva no localStorage para restaurar após retorno do checkout
+  try { localStorage.setItem('quizResult', JSON.stringify(result)); } catch (e) {}
 
-    <!-- Tela de Processamento -->
-    <section id="processing-screen" class="screen">
-        <div class="container">
-            <div class="processing-container">
-                <div class="processing-animation">
-                    <div class="spinner"></div>
-                </div>
-                <h2 class="processing-title">Processando pagamento...</h2>
-                <p class="processing-subtitle">Aguarde enquanto confirmamos seu pagamento</p>
-                <div class="processing-method" id="processing-method"></div>
-            </div>
-        </div>
-    </section>
+  // mostra a tela de processamento localmente (opcional, melhora UX)
+  document.getElementById('payment-screen')?.style.setProperty('display','none');
+  document.getElementById('processing-screen')?.style.setProperty('display','block');
 
-    <!-- Tela de Resultado -->
-    <section id="result-screen" class="screen">
-        <div class="container">
-            <div class="result-container">
-                <div class="result-header">
-                    <div class="result-celebration">🎉✨</div>
-                    <h1 class="result-title" id="result-title"></h1>
-                    <div class="result-age-display" id="result-age"></div>
-                </div>
+  // constrói return URL — a PaiPet deve redirecionar para essa URL após aprovação
+  const returnUrl = window.location.origin + window.location.pathname + '?status=aprovado';
 
-                <div class="result-sections">
-                    <div class="result-section">
-                        <h3>🌟 Fase da Vida</h3>
-                        <div class="result-content" id="life-stage-content"></div>
-                    </div>
+  // redireciona para o checkout (se a PaiPet aceitar return_url ela usará; caso contrário, configure redirecionamento no painel)
+  window.location.href = CHECKOUT_URL + '?return_url=' + encodeURIComponent(returnUrl);
+}
 
-                    <div class="result-section">
-                        <h3>💫 Características Típicas</h3>
-                        <div class="result-content" id="characteristics-content"></div>
-                    </div>
+/* Ao carregar a página, só se houver ?status=aprovado mostramos o resultado.
+   Isso evita que o clique nos botões abra o resultado sem passar pelo checkout. */
+window.addEventListener('load', function () {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('status') === 'aprovado') {
+    // recupera resultado salvo localmente
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('quizResult') || 'null'); } catch (e) { saved = null; }
 
-                    <div class="result-section">
-                        <h3>🏥 Cuidados Especiais</h3>
-                        <div class="result-content" id="care-content"></div>
-                    </div>
+    if (saved) {
+      // preenche DOM com os dados recuperados
+      if (saved.title) document.getElementById('result-title') && (document.getElementById('result-title').innerText = saved.title);
+      if (saved.age) document.getElementById('result-age') && (document.getElementById('result-age').innerText = saved.age);
+      if (saved.lifeStage) document.getElementById('life-stage-content') && (document.getElementById('life-stage-content').innerText = saved.lifeStage);
+      if (saved.characteristics) document.getElementById('characteristics-content') && (document.getElementById('characteristics-content').innerText = saved.characteristics);
+      if (saved.care) document.getElementById('care-content') && (document.getElementById('care-content').innerText = saved.care);
+      if (saved.expectancy) document.getElementById('expectancy-content') && (document.getElementById('expectancy-content').innerText = saved.expectancy);
+      if (saved.emotional) document.getElementById('emotional-content') && (document.getElementById('emotional-content').innerText = saved.emotional);
 
-                    <div class="result-section">
-                        <h3>📈 Expectativa de Vida</h3>
-                        <div class="result-content" id="expectancy-content"></div>
-                    </div>
+      // transição de telas: esconde pagamento/processing e mostra resultado
+      document.getElementById('payment-screen')?.style.setProperty('display','none');
+      document.getElementById('processing-screen')?.style.setProperty('display','none');
+      document.getElementById('result-screen')?.style.setProperty('display','block');
 
-                    <div class="result-section emotional-message">
-                        <h3>💖 Mensagem Especial</h3>
-                        <div class="result-content" id="emotional-content"></div>
-                    </div>
-                </div>
-
-                <div class="result-actions">
-                    <button class="btn btn--primary btn--lg" onclick="shareResult()">
-                        Compartilhar Resultado 📱
-                    </button>
-                    <button class="btn btn--secondary btn--lg" onclick="startNewQuiz()">
-                        Novo Quiz 🔄
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal de Compartilhamento -->
-    <div id="share-modal" class="modal hidden">
-        <div class="modal-overlay" onclick="closeShareModal()"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Compartilhar Resultado</h3>
-                <button class="modal-close" onclick="closeShareModal()">×</button>
-            </div>
-            <div class="modal-body">
-                <p>Compartilhe a idade do <span id="share-cat-name"></span> com seus amigos:</p>
-                <div class="share-buttons">
-                    <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">
-                        📱 WhatsApp
-                    </button>
-                    <button class="share-btn facebook" onclick="shareOnFacebook()">
-                        📘 Facebook
-                    </button>
-                    <button class="share-btn copy" onclick="copyResult()">
-                        📋 Copiar Texto
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
-</body>
-</html>
+      // limpa query string para evitar re-execução acidental se o usuário atualizar a página
+      history.replaceState(null, '', window.location.pathname);
+      // opcional: remover o resultado do storage
+      // localStorage.removeItem('quizResult');
+    } else {
+      alert('Pagamento aprovado, mas não foi encontrado o resultado salvo do teste.');
+    }
+  } else {
+    // se não veio com status=aprovado, garante que a tela de resultado esteja oculta
+    // (evita que outra lógica apareça por engano)
+    // Você pode ajustar essas linhas conforme seu CSS/controle de telas
+    document.getElementById('processing-screen')?.style.setProperty('display','none');
+    // geralmente a tela de pagamento deve estar visível por padrão
+  }
+});
+</script>
