@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💖 Descubra a Idade do Seu Amado Felino</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Tela Inicial -->
+    <section id="welcome-screen" class="screen active">
+        <div class="welcome-container">
+            <div class="logo-section">
+                <div class="logo-icon">🐱💖</div>
+                <h1 class="main-title">Descubra a Idade do Seu Amado Felino</h1>
+                <p class="subtitle">Um quiz personalizado que revela quantos anos humanos tem seu companheiro de quatro patas</p>
+            </div>
+            
+            <div class="features-preview">
+                <div class="feature-item">
+                    <span class="feature-icon">✨</span>
+                    <span class="feature-text">Análise personalizada</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🔬</span>
+                    <span class="feature-text">Baseado em ciência</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">❤️</span>
+                    <span class="feature-text">Feito com amor</span>
+                </div>
+            </div>
+            
+            <button class="btn btn--primary btn--lg btn--full-width" onclick="startQuiz()">
+                Começar a Jornada 🐾
+            </button>
+        </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz-screen" class="screen">
+        <div class="container">
+            <div class="quiz-header">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="quiz-progress"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text">Pergunta 1 de 12</span>
+                </div>
+            </div>
+
+            <div class="quiz-content">
+                <div class="question-card" id="question-card">
+                    <div class="question-icon" id="question-icon">🐱</div>
+                    <h2 class="question-title" id="question-title">Qual é o nome do seu precioso gatinho?</h2>
+                    <div class="question-options" id="question-options">
+                        <input type="text" class="form-control" id="cat-name-input" placeholder="Digite o nome do seu felino...">
+                    </div>
+                    <button class="btn btn--primary btn--lg" id="next-btn" onclick="nextQuestion()">
+                        Próxima Pergunta 💕
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tela de Pagamento -->
+    <section id="payment-screen" class="screen">
+        <div class="container">
+            <div class="payment-container">
+                <div class="payment-header">
+                    <div class="payment-icon">💳</div>
+                    <h2 class="payment-title">Para descobrir a idade exata do <span id="cat-name-payment"></span></h2>
+                    <p class="payment-subtitle">e receber seu relatório personalizado completo</p>
+                </div>
+
+                <div class="price-display">
+                    <div class="price-amount">R$ 7,00</div>
+                    <div class="price-description">Processamento seguro e instantâneo</div>
+                </div>
+
+                <div class="payment-methods">
+                    <button class="payment-method" onclick="processPayment('PIX')">
+                        <span class="payment-method-icon">💳</span>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">PIX</div>
+                            <div class="payment-method-desc">Aprovação instantânea</div>
+                        </div>
+                    </button>
+                    
+                    <button class="payment-method" onclick="processPayment('Cartão')">
+                        <span class="payment-method-icon">💳</span>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">Cartão de Crédito</div>
+                            <div class="payment-method-desc">Parcelado em até 2x</div>
+                        </div>
+                    </button>
+                    
+                    <button class="payment-method" onclick="processPayment('PagSeguro')">
+                        <span class="payment-method-icon">🔒</span>
+                        <div class="payment-method-info">
+                            <div class="payment-method-name">PagSeguro</div>
+                            <div class="payment-method-desc">Seguro e confiável</div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="security-info">
+                    <span class="security-icon">🔐</span>
+                    <span class="security-text">Seus dados estão protegidos</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tela de Processamento -->
+    <section id="processing-screen" class="screen">
+        <div class="container">
+            <div class="processing-container">
+                <div class="processing-animation">
+                    <div class="spinner"></div>
+                </div>
+                <h2 class="processing-title">Processando pagamento...</h2>
+                <p class="processing-subtitle">Aguarde enquanto confirmamos seu pagamento</p>
+                <div class="processing-method" id="processing-method"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tela de Resultado -->
+    <section id="result-screen" class="screen">
+        <div class="container">
+            <div class="result-container">
+                <div class="result-header">
+                    <div class="result-celebration">🎉✨</div>
+                    <h1 class="result-title" id="result-title"></h1>
+                    <div class="result-age-display" id="result-age"></div>
+                </div>
+
+                <div class="result-sections">
+                    <div class="result-section">
+                        <h3>🌟 Fase da Vida</h3>
+                        <div class="result-content" id="life-stage-content"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3>💫 Características Típicas</h3>
+                        <div class="result-content" id="characteristics-content"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3>🏥 Cuidados Especiais</h3>
+                        <div class="result-content" id="care-content"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3>📈 Expectativa de Vida</h3>
+                        <div class="result-content" id="expectancy-content"></div>
+                    </div>
+
+                    <div class="result-section emotional-message">
+                        <h3>💖 Mensagem Especial</h3>
+                        <div class="result-content" id="emotional-content"></div>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn btn--primary btn--lg" onclick="shareResult()">
+                        Compartilhar Resultado 📱
+                    </button>
+                    <button class="btn btn--secondary btn--lg" onclick="startNewQuiz()">
+                        Novo Quiz 🔄
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Compartilhamento -->
+    <div id="share-modal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeShareModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Compartilhar Resultado</h3>
+                <button class="modal-close" onclick="closeShareModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Compartilhe a idade do <span id="share-cat-name"></span> com seus amigos:</p>
+                <div class="share-buttons">
+                    <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">
+                        📱 WhatsApp
+                    </button>
+                    <button class="share-btn facebook" onclick="shareOnFacebook()">
+                        📘 Facebook
+                    </button>
+                    <button class="share-btn copy" onclick="copyResult()">
+                        📋 Copiar Texto
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
