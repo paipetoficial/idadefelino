@@ -87,7 +87,7 @@ const appData = {
         },
         {
             id: 4,
-            question: "Como estão os dentinhos do {name}?",
+            question: "Como estão os dentinhos do(a) {name}?",
             type: "radio",
             icon: "🦷",
             options: [
@@ -99,7 +99,7 @@ const appData = {
         },
         {
             id: 5,
-            question: "Os olhinhos do {name} são:",
+            question: "Os olhinhos do(a) {name} são:",
             type: "radio",
             icon: "👁️",
             options: [
@@ -111,7 +111,7 @@ const appData = {
         },
         {
             id: 6,
-            question: "O pelinho do {name} é:",
+            question: "O pelinho do(a) {name} é:",
             type: "radio",
             icon: "✨",
             options: [
@@ -123,7 +123,7 @@ const appData = {
         },
         {
             id: 7,
-            question: "O {name} foi castrado(a)?",
+            question: "O(a) {name} foi castrado(a)?",
             type: "radio",
             icon: "🏥",
             options: [
@@ -146,7 +146,7 @@ const appData = {
         },
         {
             id: 9,
-            question: "Como o {name} se alimenta?",
+            question: "Como o(a) {name} se alimenta?",
             type: "radio",
             icon: "🍽️",
             options: [
@@ -158,7 +158,7 @@ const appData = {
         },
         {
             id: 10,
-            question: "Como é o nível de atividade do {name}?",
+            question: "Como é o nível de atividade do(a) {name}?",
             type: "radio",
             icon: "🏃",
             options: [
@@ -561,7 +561,7 @@ function showResults() {
     
     // Atualizar conteúdo do resultado
     document.getElementById('result-title').textContent = 
-        `Parabéns! Descobrimos a idade do ${catName}! 🎉`;
+        `Parabéns! Descobrimos a idade do(a) ${catName}! 🎉`;
     
     document.getElementById('result-age').textContent = 
         `${catName} tem ${calculatedAge} anos humanos!`;
@@ -582,7 +582,7 @@ function showResults() {
     // Calcular expectativa de vida
     const expectancy = calculateLifeExpectancy();
     document.getElementById('expectancy-content').innerHTML = `
-        Com base no perfil do ${catName}, a expectativa de vida é de aproximadamente <strong>${expectancy} anos</strong>.<br>
+        Com base no perfil do(a) ${catName}, a expectativa de vida é de aproximadamente <strong>${expectancy} anos</strong>.<br>
         <small>Esta estimativa considera o estilo de vida, cuidados e saúde atual do seu felino.</small>
     `;
     
@@ -641,7 +641,7 @@ function closeShareModal() {
 function shareOnWhatsApp() {
     const message = `🐱 Descobri que meu gatinho ${catName} tem ${calculatedAge} anos humanos! 
     
-Ele está na fase: ${lifeStage.stage}
+Ele(a) está na fase: ${lifeStage.stage}
     
 Faça o teste do seu felino também: ${window.location.href}`;
     
