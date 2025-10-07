@@ -551,43 +551,10 @@ function determineLifeStage(humanAge, actualYears) {
     }
 }
 
-<!-- Botão de pagamento -->
-<button id="payButton">Fazer pagamento</button>
-
-<!-- Conteúdo bloqueado -->
-<div id="conteudo" style="display:none;">
-  <h2>Conteúdo exclusivo</h2>
-  <p>Seu pagamento foi aprovado!</p>
-</div>
-
-<script>
-let paymentProcessed = false;
-
-document.getElementById('payButton').addEventListener('click', function() {
-  // Redireciona o usuário para o checkout PaiPet
-  window.location.href = 'https://seguro.paipet.com.br/r/NIC3723OUB';
-});
-
-// Função de exibição
 function showResults() {
-  if (!paymentProcessed) {
-    alert('Erro: Pagamento não foi processado!');
-    return;
-  }
-
-  // Exibe o conteúdo apenas se o pagamento foi aprovado
-  document.getElementById('conteudo').style.display = 'block';
-}
-
-// Quando a página carregar, verifica se há um parâmetro de aprovação no URL
-window.addEventListener('load', function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('status') === 'aprovado') {
-    paymentProcessed = true;
-    showResults();
-  }
-});
-</script>
+    if (!paymentProcessed) {
+        alert('Erro: Pagamento não foi processado!');
+        return;
 
     }
     
