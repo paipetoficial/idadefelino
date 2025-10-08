@@ -63,7 +63,28 @@
             </div>
         </div>
     </section>
-      
+    
+<script>
+function goToCheckout() {
+  // salva o resultado atual no localStorage (ajuste os IDs se forem diferentes)
+  const result = {
+    title: document.getElementById('result-title')?.innerText || '',
+    age: document.getElementById('result-age')?.innerText || '',
+    lifeStage: document.getElementById('life-stage-content')?.innerText || '',
+    characteristics: document.getElementById('characteristics-content')?.innerText || '',
+    care: document.getElementById('care-content')?.innerText || '',
+    expectancy: document.getElementById('expectancy-content')?.innerText || '',
+    emotional: document.getElementById('emotional-content')?.innerText || ''
+  };
+
+  localStorage.setItem('quizResult', JSON.stringify(result));
+  localStorage.setItem('awaitingPayment', 'true');
+
+  // redireciona ao checkout da Yampi
+  window.location.href = 'https://seguro.paipet.com.br/r/NIC3723OUB';
+}
+</script>
+
  <!-- Tela de Pagamento -->
     <section id="payment-screen" class="screen">
         <div class="container">
