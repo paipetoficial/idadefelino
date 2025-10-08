@@ -101,7 +101,16 @@ function goToCheckout() {
                 </div>
 
                 <div class="payment-methods">
-                    <button class="payment-method" onclick="window.open('https://seguro.paipet.com.br/r/NIC3723OUB', '_blank')">
+                    <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const btn = document.querySelector(".payment-method"); // ajusta se precisar selecionar especificamente PIX ou Cartão
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    window.open('https://seguro.paipet.com.br/r/NIC3723OUB', '_blank');
+    // não preventDefault, não retorna false -> mantém qualquer outro comportamento do botão
+  }, { once: false });
+});
+</script>
                         <span class="payment-method-icon">💳</span>
                         <div class="payment-method-info">
                             <div class="payment-method-name">PIX</div>
