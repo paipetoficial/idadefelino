@@ -1,3 +1,12 @@
+// Logo no início do app.js
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('tela') === 'processing') {
+  // Aqui você busca os dados salvos no localStorage
+  const quizResult = JSON.parse(localStorage.getItem('quizResult') || '{}');
+  // Mostra a tela de processamento e depois de confirmar o pagamento, mostra o resultado
+  mostrarTelaProcessamento();
+  // Depois, segue para mostrar o resultado do quiz usando quizResult
+}
 // Quiz de Idade dos Gatos - JavaScript
 
 // Dados da aplicação baseados no JSON fornecido
